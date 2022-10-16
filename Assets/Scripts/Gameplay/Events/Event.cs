@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay.Events
 {
-    public class Event : MonoBehaviour
+    public abstract class Event
     {
     }
 }

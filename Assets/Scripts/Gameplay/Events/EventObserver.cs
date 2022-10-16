@@ -19,7 +19,7 @@ namespace Gameplay.Events
 
     public class EventPublisher : MonoBehaviour, IEventPublisher
     {
-        private Dictionary<Type, Action<Event>> _eventBus = new();
+        private readonly Dictionary<Type, Action<Event>> _eventBus = new();
 
         public void AddSubscriber(Event eventType, Action<Event> eventSubscriber)
         {

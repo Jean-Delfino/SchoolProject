@@ -1,7 +1,7 @@
 using System;
 
 using Gameplay.Actors.ActorsActions;
-
+using Gameplay.Actors.Components;
 using UnityEngine;
 
 using Event = Gameplay.Events.Event;
@@ -34,6 +34,11 @@ namespace Gameplay.Actors
         private CharacterController _movementController;
         public CharacterController MovementController => _movementController;
         
+        [Space] [Header("VISUAL COMPONENT")] [Space]
+        
+        [SerializeField] private VisualComponent visualController;
+
+
         private void Start()
         {
             _interactionController = GetComponent<InteractionController>();
@@ -41,14 +46,15 @@ namespace Gameplay.Actors
 
             movement = Instantiate(movement);
             interaction = Instantiate(interaction);
+            visualController = Instantiate(visualController);
 
             movement.Setup(this);
             interaction.Setup(this);
+            visualController.Setup(this);
         }
 
         public void Subscribe()
         {
-            //this.AddSubscriber();
         }
 
         private void Update()

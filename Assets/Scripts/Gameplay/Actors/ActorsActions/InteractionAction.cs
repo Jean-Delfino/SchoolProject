@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Gameplay.Events;
+using Gameplay.InputManagement;
+using UnityEngine;
+using Utils;
 
 namespace Gameplay.Actors.ActorsActions
 {
@@ -7,9 +10,11 @@ namespace Gameplay.Actors.ActorsActions
     {
         public override bool ProcessAction()
         {
-            if (Input.GetAxis("Interaction") != 0)
+            if (InputManager.GetKey("Interact") != 0)
             {
                 Actor.InteractionController.ExecuteClosestInteraction().ExecuteInteraction(Actor);
+                UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Interacting", true));
+
                 return false;
             }
 

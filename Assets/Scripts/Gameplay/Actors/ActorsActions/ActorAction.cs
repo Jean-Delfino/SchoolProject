@@ -6,7 +6,7 @@ namespace Gameplay.Actors.ActorsActions
     {
         protected Actor Actor;
 
-        public virtual void Setup(Actor actor)
+        public void Setup(Actor actor)
         {
             Actor = actor;
         }

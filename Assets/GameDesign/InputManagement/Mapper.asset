@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a925a7eea94cfa8e4290c6510771e6, type: 3}
+  m_Name: Mapper
+  m_EditorClassIdentifier: 
+  visibleMapping:
+  - id: Vertical
+    value:
+      positiveKey:
+        value: w
+        keyName: Foward
+      negativeKey:
+        value: s
+        keyName: Backward
+  - id: Horizontal
+    value:
+      positiveKey:
+        value: a
+        keyName: Left
+      negativeKey:
+        value: d
+        keyName: Right
+  - id: Jump
+    value:
+      positiveKey:
+        value: space
+        keyName: 
+      negativeKey:
+        value: 
+        keyName: 
+  - id: Interact
+    value:
+      positiveKey:
+        value: e
+        keyName: 
+      negativeKey:
+        value: 
+        keyName: 
+  - id: Menu
+    value:
+      positiveKey:
+        value: escape
+        keyName: 
+      negativeKey:
+        value: 
+        keyName: 

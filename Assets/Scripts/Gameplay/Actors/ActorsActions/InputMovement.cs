@@ -1,4 +1,7 @@
+using Gameplay.Events;
+using Gameplay.InputManagement;
 using UnityEngine;
+using Utils;
 
 namespace Gameplay.Actors.ActorsActions
 {
@@ -6,19 +9,17 @@ namespace Gameplay.Actors.ActorsActions
     public class InputMovement : ActorAction
     {
         private const float Gravity = 10f;
-        private Vector3 _velocityY;
-        
-        public float feetRadius;
-        
+        private Vector3 _velocityY = new(0,0,0);
+
         public override bool ProcessAction()
         {
             var zSpeed = Actor.actorSpeed;
             var xSpeed = zSpeed;
             var proceedCheck = true;
 
-            var x = Input.GetAxis("Horizontal");
-            var z = Input.GetAxis("Vertical");
-            
+            var x = InputManager.GetAxis("Horizontal");
+            var z = InputManager.GetAxis("Vertical");
+
             if(z < 0) xSpeed = zSpeed /= Actor.reducedSpeed;
             
             var check = Actor.MovementController.isGrounded;
@@ -26,15 +27,34 @@ namespace Gameplay.Actors.ActorsActions
             if (check && _velocityY.y < 0)
             {
                 _velocityY.y = 0f;
+                
+                UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Falling", false));
+                UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Jumping", false));
             }
             
-            if(check && Input.GetButtonDown("Jump")){
-                proceedCheck = false;
-                _velocityY.y = Mathf.Sqrt(xSpeed * 3f * Gravity);
+            if(check)
+            {
+                var jump = InputManager.GetKey("Jump");
+                if (jump > 0)
+                {
+                    proceedCheck = false;
+                    _velocityY.y = Mathf.Sqrt(xSpeed);
+                    UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Jumping", true));
+                }
+            }
+
+            if (!check)
+            {
+                _velocityY.y -= Gravity * Time.deltaTime;
+                
+                UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Falling", true));
             }
             
-            _velocityY.y -= Gravity * Time.deltaTime;
-            
+            if (x != 0 || z != 0)
+                UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Moving", true));
+            else
+                UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Moving", false));
+
             var actorTransform = Actor.transform;
             var move = (actorTransform.right * x * xSpeed) + (actorTransform.forward * z * zSpeed) + _velocityY;
 

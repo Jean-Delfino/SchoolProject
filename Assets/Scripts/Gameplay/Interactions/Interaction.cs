@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Gameplay.Actors;
-
+using Gameplay.Events;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -77,6 +77,12 @@ namespace Gameplay.Interactions
         public void EndInteraction(Actor actor)
         {
             actor.InteractionController.IsInteracting = false;
+            
+            actor.ReceiveEvent(new AnimationChangeEvent
+            {
+                AnimationName = "Interacting",
+                State = false
+            });
         }
     }
 }
