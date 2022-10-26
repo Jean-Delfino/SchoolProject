@@ -6,6 +6,7 @@ using Gameplay.Actors;
 using Gameplay.Events;
 using UnityEngine;
 using UnityEngine.Events;
+using Utils;
 
 namespace Gameplay.Interactions
 {
@@ -29,9 +30,11 @@ namespace Gameplay.Interactions
 
         [SerializeField] private List<FunctionsInteraction> onStartInteractions;
         [SerializeField] private List<ActorFunctionsInteraction> actorDependentInteractions;
-        [SerializeField] private UnityEvent2 onEndInteractions;
+        [SerializeField] private FunctionsInteraction onEndInteractions;
 
         public float Radius => radius;
+
+        private Actor _actualInteractingActor;
         
         private void OnTriggerEnter(Collider other)
         {
@@ -55,9 +58,15 @@ namespace Gameplay.Interactions
 
         private IEnumerator StartInteraction(Actor actor)
         {
+            _actualInteractingActor = actor;
+            
             foreach (var start in onStartInteractions)
             {
                 start.callback.Invoke();
+                if (start.timeToEnd < 0)
+                {
+                    break;
+                }
                 yield return new WaitForSeconds(start.timeToEnd);
             }
             
@@ -66,23 +75,22 @@ namespace Gameplay.Interactions
                 actorDependent.callback.Invoke(actor);
                 yield return new WaitForSeconds(actorDependent.timeToEnd);
             }
-
-            yield return new WaitUntil(() => actor.InteractionController.IsInteracting == false);
-            onEndInteractions.Invoke();
             
+            yield return new WaitUntil(() => actor.InteractionController.IsInteracting == false);
+
             yield return null;
         }
-        
+
         //Something need to call this in each interaction, no matter if is a button or a callback
-        public void EndInteraction(Actor actor)
+        public IEnumerator CallEnd()
         {
-            actor.InteractionController.IsInteracting = false;
-            
-            actor.ReceiveEvent(new AnimationChangeEvent
-            {
-                AnimationName = "Interacting",
-                State = false
-            });
+            var actor = _actualInteractingActor;
+
+            yield return new WaitForSeconds(onEndInteractions.timeToEnd);
+            UtilInteraction.EndInteraction(actor);
+            onEndInteractions.callback.Invoke();
+
+            yield return null;
         }
     }
 }

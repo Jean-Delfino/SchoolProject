@@ -12,7 +12,7 @@ namespace Gameplay.Actors.ActorsActions
         {
             if (InputManager.GetKey("Interact") != 0)
             {
-                Actor.InteractionController.ExecuteClosestInteraction().ExecuteInteraction(Actor);
+                Actor.InteractionController.ExecuteClosestInteraction()?.ExecuteInteraction(Actor);
                 UtilEvent.SendEventToActor(Actor, UtilEvent.CreateAnimationEvent("Interacting", true));
 
                 return false;
