@@ -56,7 +56,7 @@ namespace Gameplay.Interactions
             StartCoroutine(StartInteraction(actor));
         }
 
-        private IEnumerator StartInteraction(Actor actor)
+        protected virtual IEnumerator StartInteraction(Actor actor)
         {
             _actualInteractingActor = actor;
             
@@ -82,7 +82,7 @@ namespace Gameplay.Interactions
         }
 
         //Something need to call this in each interaction, no matter if is a button or a callback
-        public IEnumerator CallEnd()
+        public virtual IEnumerator CallEnd()
         {
             var actor = _actualInteractingActor;
 
