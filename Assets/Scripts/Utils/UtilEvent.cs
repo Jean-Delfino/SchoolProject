@@ -16,7 +16,7 @@ namespace Utils
 
         public static void SendEventToActor(Actor actor, Event eventToSend)
         {
-            actor.ReceiveEvent(eventToSend);
+            actor.PublishEvent(eventToSend);
         }
     }
 }

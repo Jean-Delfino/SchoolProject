@@ -20,12 +20,12 @@ namespace Gameplay.Actors.Components
 
             _actorAnimator.runtimeAnimatorController = basicAnimationController;
 
-            Subscribe();
+            SubscribeEvents(actor);
         }
 
-        public void Subscribe()
+        public void SubscribeEvents(IEventPublisher toSubscribe)
         {
-            _actor.AddSubscriber(new AnimationChangeEvent(), AnimationHandler);
+            toSubscribe.AddSubscriber(typeof(AnimationChangeEvent), AnimationHandler);
         }
 
         private void AnimationHandler(Event animationEvent)

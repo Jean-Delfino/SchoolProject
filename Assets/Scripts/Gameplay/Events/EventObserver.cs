@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
+
+using Event = Gameplay.Events;
 
 namespace Gameplay.Events
 {
@@ -10,11 +10,12 @@ namespace Gameplay.Events
     public interface IEventPublisher
     {
         public void AddSubscriber(Event eventType, Action<Event> eventSubscriber);
-        public void ReceiveEvent(Event eventType);
+        public void AddSubscriber(Type eventType, Action<Event> eventSubscriber);
+        public void PublishEvent(Event eventType);
     }
     public interface IEventSubscriber
     {
-        public void Subscribe();
+        public void SubscribeEvents(IEventPublisher toSubscribe);
     }
 
     public class EventPublisher : MonoBehaviour, IEventPublisher
@@ -28,8 +29,15 @@ namespace Gameplay.Events
             
             _eventBus[typeEvent] += eventSubscriber;
         }
+        
+        public void AddSubscriber(Type type, Action<Event> eventSubscriber)
+        {
+            if(!_eventBus.ContainsKey(type)) _eventBus.Add(type, null);
+            
+            _eventBus[type] += eventSubscriber;
+        }
 
-        public void ReceiveEvent(Event callEvent)
+        public void PublishEvent(Event callEvent)
         {
             var typeEvent = callEvent.GetType();
             if(!_eventBus.ContainsKey(typeEvent)) return;

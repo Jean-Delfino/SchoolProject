@@ -9,10 +9,9 @@ namespace Utils
     {
         public static void EndInteraction(Actor actor)
         {
-            Debug.Log("CHAMANDO END");
             actor.InteractionController.IsInteracting = false;
 
-            actor.ReceiveEvent(new AnimationChangeEvent
+            actor.PublishEvent(new AnimationChangeEvent
             {
                 AnimationName = "Interacting",
                 State = false

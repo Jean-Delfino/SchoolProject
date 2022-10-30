@@ -53,7 +53,7 @@ namespace Gameplay.Actors
             visualController.Setup(this);
         }
 
-        public void Subscribe()
+        public void SubscribeEvents(IEventPublisher toSubscribe)
         {
         }
 
