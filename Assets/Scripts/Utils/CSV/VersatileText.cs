@@ -20,6 +20,11 @@ namespace Utils.CSV
             GameVersatileTextsController.Unsubscribe(this);
         }
 
+        private void OnEnable()
+        {
+            SetText();
+        }
+
         public void SetText()
         {
             var newText = GameVersatileTextsLocator.Localize(textKey);

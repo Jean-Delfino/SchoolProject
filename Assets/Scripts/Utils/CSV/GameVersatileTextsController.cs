@@ -7,22 +7,25 @@ namespace Utils.CSV
     public class GameVersatileTextsController : MonoBehaviour
     {
         [SerializeField] private VersatileTextsFiles files;
+        
+        private static VersatileTextsFiles _files;
 
         private static readonly List<VersatileText> VersatileTexts = new();
         public void Awake()
         {
-            GameVersatileTextsLocator.InitializeTexts(files);
+            _files = files;
+            GameVersatileTextsLocator.InitializeTexts(_files);
             ChangeActualLanguage(files.actualLanguage);
         }
 
-        public void ChangeActualLanguage(int newLanguage)
+        public static void ChangeActualLanguage(int newLanguage)
         {
-            files.actualLanguage = newLanguage; //This saves the file in memory
-            GameVersatileTextsLocator.ChangeActualLanguage(files.actualLanguage);
+            _files.actualLanguage = newLanguage; //This saves the file in memory
+            GameVersatileTextsLocator.ChangeActualLanguage(_files.actualLanguage);
             SetAllTexts();
         }
         
-        public void SetAllTexts()
+        private static void SetAllTexts()
         {
             foreach (var text in VersatileTexts)
             {
